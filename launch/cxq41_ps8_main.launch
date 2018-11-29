@@ -1,0 +1,10 @@
+<launch>
+    <!--ROS launch for the main ariac simulation with argument of filling-->
+    <group>
+        <include file="$(find cwru_ariac_launch)/sample_environment.launch">
+            <arg name="fill_demo_shipment" value="true"/>
+        </include>
+    </group>
+    <!--Use this following code to start the competition automatically-->
+    <node pkg="cxq41_ps8_box_unloader" type="start_competition" name="competition_starter" output="screen"/>
+</launch>

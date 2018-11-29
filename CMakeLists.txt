@@ -37,6 +37,7 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 # may add more of these lines for more nodes from the same package
 # cs_add_executable(example src/example.cpp)
 cs_add_executable(unload_box src/unload_box.cpp)
+cs_add_executable(start_competition src/start_competition.cpp)
 
 cs_install()
 cs_export()

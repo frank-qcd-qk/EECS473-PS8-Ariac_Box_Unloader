@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+    <!--Robot Move action Server-->
+    <node pkg="kuka_move_as" type="kuka_behavior_as2" name="kuka_action_server" output="screen"/>
+    <!--Conveyor Action Server-->
+    <node pkg="conveyor_as" type="conveyor_as" name="conveyor_action_server" output="screen"/>
+</launch>
