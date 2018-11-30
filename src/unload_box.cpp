@@ -19,7 +19,7 @@
 const double COMPETITION_TIMEOUT =
     500.0;  // need to  know what this is for the finals;
 // want to ship out partial credit before time runs out!
-
+const double error_limit = 0.01;
 void model_to_part(osrf_gear::Model model, inventory_msgs::Part& part,
                    unsigned short int location) {
     part.name = model.type;
@@ -102,16 +102,15 @@ int main(int argc, char** argv) {
        doing this, we can avoid robot arm hit any currently precise parts
     */
 
-
     //! Orphan handler:
-    //TODO: get current status, prep for orphan
+    // TODO: get current status, prep for orphan
     boxInspector.update_inspection(
         desired_models_wrt_world, satisfied_models_wrt_world,
         misplaced_models_actual_coords_wrt_world,
         misplaced_models_desired_coords_wrt_world, missing_models_wrt_world,
         orphan_models_wrt_world, part_indices_missing, part_indices_misplaced,
         part_indices_precisely_placed);
-    //TODO: Ditch loop:
+    // TODO: Ditch loop:
     while (orphan_models_wrt_world.size() > 0) {
         // TODO: Start removing orphaned parts first:
         ROS_INFO("[BOX handle orphan] Removing orphaned parts in box: ");
@@ -139,24 +138,71 @@ int main(int argc, char** argv) {
             orphan_models_wrt_world, part_indices_missing,
             part_indices_misplaced, part_indices_precisely_placed);
     }
-    ROS_INFO("[BOX handle] All orphaned parts have been removed!");
+    ROS_INFO("[BOX handle orphan] All orphaned parts have been removed!");
 
     //! Bad part Handler:
-    //TODO: get current status, prep for orphan
+    // TODO: get current status, prep for bad part
     boxInspector.update_inspection(
         desired_models_wrt_world, satisfied_models_wrt_world,
         misplaced_models_actual_coords_wrt_world,
         misplaced_models_desired_coords_wrt_world, missing_models_wrt_world,
         orphan_models_wrt_world, part_indices_missing, part_indices_misplaced,
         part_indices_precisely_placed);
+    // TODO: Ditch loop:
+    while (part_indices_misplaced.size() > 0) {
+        // TODO: Start removing orphaned parts first:
+        ROS_INFO("[BOX handle bad] Removing orphaned parts in box: ");
+        nparts = part_indices_misplaced.size();
+        ROS_INFO("[BOX handle bad] num parts orphaned seen in box = %d",
+                 nparts);
+        for (int i = 0; i < nparts; i++) {
+            ROS_INFO_STREAM("[BOX handle bad] Checking bad parts: "
+                            << part_indices_misplaced[i] << endl);
+            // TODO: Check if difference is within the limit:
+            if (fabs(misplaced_models_desired_coords_wrt_world[i]
+                         .pose.position.x -
+                     misplaced_models_actual_coords_wrt_world[i]
+                         .pose.position.x) > error_limit &&
+                fabs(misplaced_models_desired_coords_wrt_world[i]
+                         .pose.position.y -
+                     misplaced_models_actual_coords_wrt_world[i]
+                         .pose.position.y) > error_limit &&
+                fabs(misplaced_models_desired_coords_wrt_world[i]
+                         .pose.position.z -
+                     misplaced_models_actual_coords_wrt_world[i]
+                         .pose.position.z) > error_limit) {
+                ROS_INFO_STREAM(
+                    "[BOX handle bad] Removing bad parts exceed limit: "
+                    << part_indices_misplaced[i] << endl);
+                model_to_part(misplaced_models_actual_coords_wrt_world[i],
+                              current_part,
+                              inventory_msgs::Part::QUALITY_SENSOR_1);
+                status =
+                    robotBehaviorInterface.pick_part_from_box(current_part);
+                if (status == false) {
+                    ROS_FATAL(
+                        "[BOX Handle bad]Critical issue: path plan failed");
+                }
+            }
 
+            ROS_INFO_STREAM("[BOX handle bad] Removing orphaned parts: "
+                            << orphan_models_wrt_world[i] << endl);
 
-    if (boxInspector.get_bad_part_Q1(current_part)) {
-        // TODO: Start removal of broken parts:
-        ROS_INFO("[BOX handle] found bad part: ");
-        ROS_INFO_STREAM(current_part << endl);
-        status = robotBehaviorInterface.pick_part_from_box(current_part);
+            status = robotBehaviorInterface.pick_part_from_box(current_part);
+            if (status == false) {
+                ROS_FATAL("[BOX Handle bad]Critical issue: path plan failed");
+            }
+        }
+
+        // TODO: Inspect the box one more time...
+        boxInspector.update_inspection(
+            desired_models_wrt_world, satisfied_models_wrt_world,
+            misplaced_models_actual_coords_wrt_world,
+            misplaced_models_desired_coords_wrt_world, missing_models_wrt_world,
+            orphan_models_wrt_world, part_indices_missing,
+            part_indices_misplaced, part_indices_precisely_placed);
     }
+    ROS_INFO("[BOX handle] All orphaned parts have been removed!");
 
     //! Rest of the part handler:
     // TODO: Inspect the parts left:
@@ -166,19 +212,20 @@ int main(int argc, char** argv) {
         misplaced_models_desired_coords_wrt_world, missing_models_wrt_world,
         orphan_models_wrt_world, part_indices_missing, part_indices_misplaced,
         part_indices_precisely_placed);
-    //TODO: Ditch loop:
+    // TODO: Ditch loop:
     while (satisfied_models_wrt_world.size() > 0) {
         // TODO: Ditch all the parts even they are good:
-        ROS_INFO("[BOX handle good] Removing orphaned parts in box: ");
+        ROS_INFO("[BOX handle good] Removing good parts in box: ");
         nparts = satisfied_models_wrt_world.size();
-        ROS_INFO("[BOX handle good] num parts orphaned seen in box = %d",
-                 nparts);
+        ROS_INFO("[BOX handle good] num parts good seen in box = %d", nparts);
         for (int i = 0; i < nparts; i++) {
+            ROS_INFO_STREAM("[BOX handle good] Removing good parts: "
+                            << satisfied_models_wrt_world[i] << endl);
             model_to_part(satisfied_models_wrt_world[i], current_part,
                           inventory_msgs::Part::QUALITY_SENSOR_1);
             status = robotBehaviorInterface.pick_part_from_box(current_part);
             if (status == false) {
-                ROS_FATAL("[BOX Handle goo]Critical issue: path plan failed");
+                ROS_FATAL("[BOX Handle good]Critical issue: path plan failed");
             }
             // TODO: Inspect the box one more time...
             boxInspector.update_inspection(
@@ -191,7 +238,8 @@ int main(int argc, char** argv) {
         }
         return 0;
     }
+    ROS_INFO("[BOX handle all] All good parts have been removed!");
 
     // TODO: All complete flag:
-    ROS_INFO("[BOX handle all] All good parts have been removed!");
+    ROS_INFO("[BOX handle all] All parts have been removed!");
 }
