@@ -236,10 +236,11 @@ int main(int argc, char** argv) {
                 part_indices_missing, part_indices_misplaced,
                 part_indices_precisely_placed);
         }
-        return 0;
     }
     ROS_INFO("[BOX handle good] All good parts have been removed!");
 
     // TODO: All complete flag:
     ROS_INFO("[BOX handle all] All parts have been removed!");
+    return 0;
+
 }
