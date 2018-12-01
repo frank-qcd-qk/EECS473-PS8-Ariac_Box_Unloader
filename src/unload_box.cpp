@@ -94,7 +94,7 @@ int main(int argc, char** argv) {
 
     //! if survive to here, then box is at Q1 inspection station;
     //! Begin in box processing:
-    ROS_INFO("[BOX handle] Begin Box Process!");
+    ROS_INFO("[BOX handle all] Begin Box Process!");
     /* The logic here is changed in order for a better result:
         Since orphaned parts are always going to be need to removed, it won't
        hurt to remove the orphaned parts first. Once orphaned parts are removed,
@@ -202,7 +202,7 @@ int main(int argc, char** argv) {
             orphan_models_wrt_world, part_indices_missing,
             part_indices_misplaced, part_indices_precisely_placed);
     }
-    ROS_INFO("[BOX handle] All orphaned parts have been removed!");
+    ROS_INFO("[BOX handle bad] All bad parts have been removed!");
 
     //! Rest of the part handler:
     // TODO: Inspect the parts left:
@@ -238,7 +238,7 @@ int main(int argc, char** argv) {
         }
         return 0;
     }
-    ROS_INFO("[BOX handle all] All good parts have been removed!");
+    ROS_INFO("[BOX handle good] All good parts have been removed!");
 
     // TODO: All complete flag:
     ROS_INFO("[BOX handle all] All parts have been removed!");

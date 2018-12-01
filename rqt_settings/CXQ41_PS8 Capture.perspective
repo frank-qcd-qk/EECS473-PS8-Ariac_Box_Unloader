@@ -1,0 +1,183 @@
+{
+  "keys": {},
+  "groups": {
+    "pluginmanager": {
+      "keys": {
+        "running-plugins": {
+          "type": "repr",
+          "repr": "{u'rqt_console/Console': [1]}"
+        }
+      },
+      "groups": {
+        "plugin__rqt_console__Console__1": {
+          "keys": {},
+          "groups": {
+            "dock_widget__ConsoleWidget": {
+              "keys": {
+                "dockable": {
+                  "type": "repr",
+                  "repr": "True"
+                },
+                "parent": {
+                  "type": "repr",
+                  "repr": "None"
+                },
+                "dock_widget_title": {
+                  "type": "repr",
+                  "repr": "u'Console'"
+                }
+              },
+              "groups": {}
+            },
+            "plugin": {
+              "keys": {
+                "show_highlighted_only": {
+                  "type": "repr",
+                  "repr": "False"
+                },
+                "message_limit": {
+                  "type": "repr",
+                  "repr": "20000"
+                },
+                "exclude_filters": {
+                  "type": "repr",
+                  "repr": "u'severity'"
+                },
+                "table_splitter": {
+                  "type": "repr(QByteArray.hex)",
+                  "repr(QByteArray.hex)": "QtCore.QByteArray('000000ff00000001000000020000005d000000e70100000009010000000200')",
+                  "pretty-print": "       ]       "
+                },
+                "highlight_filters": {
+                  "type": "repr",
+                  "repr": "[u'message', u'message', u'message', u'message']"
+                },
+                "paused": {
+                  "type": "repr",
+                  "repr": "False"
+                },
+                "settings_exist": {
+                  "type": "repr",
+                  "repr": "True"
+                },
+                "filter_splitter": {
+                  "type": "repr(QByteArray.hex)",
+                  "repr(QByteArray.hex)": "QtCore.QByteArray('000000ff00000001000000020000006f0000006f0100000009010000000200')",
+                  "pretty-print": "       o o     "
+                }
+              },
+              "groups": {
+                "highlight_filter_2": {
+                  "keys": {
+                    "regex": {
+                      "type": "repr",
+                      "repr": "False"
+                    },
+                    "text": {
+                      "type": "repr",
+                      "repr": "u'BOX handle bad'"
+                    },
+                    "enabled": {
+                      "type": "repr",
+                      "repr": "True"
+                    }
+                  },
+                  "groups": {}
+                },
+                "highlight_filter_3": {
+                  "keys": {
+                    "regex": {
+                      "type": "repr",
+                      "repr": "False"
+                    },
+                    "text": {
+                      "type": "repr",
+                      "repr": "u'BOX handle good'"
+                    },
+                    "enabled": {
+                      "type": "repr",
+                      "repr": "True"
+                    }
+                  },
+                  "groups": {}
+                },
+                "exclude_filter_0": {
+                  "keys": {
+                    "enabled": {
+                      "type": "repr",
+                      "repr": "True"
+                    },
+                    "itemlist": {
+                      "type": "repr",
+                      "repr": "u''"
+                    }
+                  },
+                  "groups": {}
+                },
+                "highlight_filter_1": {
+                  "keys": {
+                    "regex": {
+                      "type": "repr",
+                      "repr": "False"
+                    },
+                    "text": {
+                      "type": "repr",
+                      "repr": "u'BOX handle orphan'"
+                    },
+                    "enabled": {
+                      "type": "repr",
+                      "repr": "True"
+                    }
+                  },
+                  "groups": {}
+                },
+                "highlight_filter_0": {
+                  "keys": {
+                    "regex": {
+                      "type": "repr",
+                      "repr": "False"
+                    },
+                    "text": {
+                      "type": "repr",
+                      "repr": "u'BOX handle all'"
+                    },
+                    "enabled": {
+                      "type": "repr",
+                      "repr": "True"
+                    }
+                  },
+                  "groups": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "mainwindow": {
+      "keys": {
+        "geometry": {
+          "type": "repr(QByteArray.hex)",
+          "repr(QByteArray.hex)": "QtCore.QByteArray('01d9d0cb00020000000003e0000000180000077f00000437000003e0000000340000077f0000043700000000000000000780')",
+          "pretty-print": "           7   4   7     "
+        },
+        "state": {
+          "type": "repr(QByteArray.hex)",
+          "repr(QByteArray.hex)": "QtCore.QByteArray('000000ff00000000fd0000000100000003000003a0000003eefc0100000001fb0000004c007200710074005f0063006f006e0073006f006c0065005f005f0043006f006e0073006f006c0065005f005f0031005f005f0043006f006e0073006f006c00650057006900640067006500740100000000000003a0000001b100ffffff000003a00000000000000004000000040000000800000008fc00000001000000030000000100000036004d0069006e0069006d0069007a006500640044006f0063006b00570069006400670065007400730054006f006f006c0062006100720000000000ffffffff0000000000000000')",
+          "pretty-print": "                 Lrqt_console__Console__1__ConsoleWidget                            6MinimizedDockWidgetsToolbar        "
+        }
+      },
+      "groups": {
+        "toolbar_areas": {
+          "keys": {
+            "MinimizedDockWidgetsToolbar": {
+              "type": "repr",
+              "repr": "8"
+            }
+          },
+          "groups": {}
+        }
+      }
+    }
+  }
+}
