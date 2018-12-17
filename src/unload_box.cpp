@@ -151,12 +151,12 @@ int main(int argc, char** argv) {
     // TODO: Ditch loop:
     while (part_indices_misplaced.size() > 0) {
         // TODO: Start removing orphaned parts first:
-        ROS_INFO("[BOX handle bad] Removing orphaned parts in box: ");
+        ROS_INFO("[BOX handle misplaced] Removing misplaced parts in box: ");
         nparts = part_indices_misplaced.size();
-        ROS_INFO("[BOX handle bad] num parts orphaned seen in box = %d",
+        ROS_INFO("[BOX handle misplaced] num parts misplaced seen in box = %d",
                  nparts);
         for (int i = 0; i < nparts; i++) {
-            ROS_INFO_STREAM("[BOX handle bad] Checking bad parts: "
+            ROS_INFO_STREAM("[BOX handle misplaced] Checking misplaced parts: "
                             << part_indices_misplaced[i] << endl);
             // TODO: Check if difference is within the limit:
             if (fabs(misplaced_models_desired_coords_wrt_world[i]
@@ -172,7 +172,7 @@ int main(int argc, char** argv) {
                      misplaced_models_actual_coords_wrt_world[i]
                          .pose.position.z) > error_limit) {
                 ROS_INFO_STREAM(
-                    "[BOX handle bad] Removing bad parts exceed limit: "
+                    "[BOX handle misplaced] Removing misplaced parts exceed limit: "
                     << part_indices_misplaced[i] << endl);
                 model_to_part(misplaced_models_actual_coords_wrt_world[i],
                               current_part,
@@ -181,16 +181,16 @@ int main(int argc, char** argv) {
                     robotBehaviorInterface.pick_part_from_box(current_part);
                 if (status == false) {
                     ROS_FATAL(
-                        "[BOX Handle bad]Critical issue: path plan failed");
+                        "[BOX Handle misplaced]Critical issue: path plan failed");
                 }
             }
 
-            ROS_INFO_STREAM("[BOX handle bad] Removing orphaned parts: "
-                            << orphan_models_wrt_world[i] << endl);
+            ROS_INFO_STREAM("[BOX handle misplaced] Removing misplaced parts: "
+                            << part_indices_misplaced[i] << endl);
 
             status = robotBehaviorInterface.pick_part_from_box(current_part);
             if (status == false) {
-                ROS_FATAL("[BOX Handle bad]Critical issue: path plan failed");
+                ROS_FATAL("[BOX Handle misplaced]Critical issue: path plan failed");
             }
         }
 
@@ -202,6 +202,19 @@ int main(int argc, char** argv) {
             orphan_models_wrt_world, part_indices_missing,
             part_indices_misplaced, part_indices_precisely_placed);
     }
+    ROS_INFO("[BOX handle misplaced] All misplaced parts have been removed!");
+    
+    if (boxInspector.get_bad_part_Q(current_part, CAM1)) {
+            ROS_INFO("found bad part: ");
+            ROS_INFO_STREAM(current_part << endl);
+
+            cout << "enter 1 to attempt to remove bad part: ";  // poor-man's
+                                                                // breakpoint
+            cin >> ans;
+            status = robotBehaviorInterface.pick_part_from_box(current_part);
+            // and discard it:
+            status = robotBehaviorInterface.discard_grasped_part(current_part);
+        }
     ROS_INFO("[BOX handle bad] All bad parts have been removed!");
 
     //! Rest of the part handler:
